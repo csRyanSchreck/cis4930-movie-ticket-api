@@ -5,7 +5,7 @@ openapi: 3.0.3
 #File description
 info:
   title: Movie Ticket Payment API
-  description: API for processing movie ticket payments in an online booking system.
+  description: This API allows users to make, retrieve, and delete payments related to online movie ticket purchases. It supports basic operations like creating a new payment, checking payment status, and canceling a payment if needed.
   version: 1.0.0
 
 #API endpoint to make a payment
@@ -58,7 +58,37 @@ paths:
           description: Payment successful
         '400':
           description: Invalid request # missing fields or invalid payment method etc
-        '402':
-          description: Payment failed # insufficient funds etc
         '500':
           description: Server error during payment processing
+  /payments/{paymentId}:
+      get:
+        summary: Retrieve a payment by ID
+        parameters:
+          - name: paymentId
+            in: path
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Payment found
+          '404':
+            description: Payment not found
+
+      delete:
+        summary: Cancel a payment by ID
+        parameters:
+          - name: paymentId
+            in: path
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Payment successfully canceled
+          '404':
+            description: Payment not found
+          '500':
+            description: Server error during cancellation
+
+
