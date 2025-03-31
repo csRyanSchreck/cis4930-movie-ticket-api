@@ -1,0 +1,64 @@
+#Ryan Schreck | CIS4930 | Assignment 8
+
+#Define openapi version
+openapi: 3.0.3
+#List file description
+info:
+  title: Movie Ticket Payment API
+  description: API for processing movie ticket payments in an online booking system.
+  version: 1.0.0
+
+
+paths:
+  /payments:
+    post:
+      summary: Make a payment for movie tickets
+      operationId: makePayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - showId
+                - seatNumbers
+                - paymentMethod
+              properties:
+                userId:
+                  type: string
+                  description: Unique ID of the customer making the payment
+                showId:
+                  type: string
+                  description: Identifier for the movie showtime
+                seatNumbers:
+                  type: array
+                  items:
+                    type: string
+                  description: List of selected seat numbers
+                paymentMethod:
+                  type: object
+                  required:
+                    - type
+                    - details
+                  properties:
+                    type:
+                      type: string
+                      description: Type of payment method
+                    details:
+                      type: object
+                      description: Payment details
+                totalAmount:
+                  type: number
+                  format: float
+                  description: Total amount to be charged
+      responses:
+        '200':
+          description: Payment successful
+        '400':
+          description: Invalid request
+        '402':
+          description: Payment failed
+        '500':
+          description: Server error during payment processing
